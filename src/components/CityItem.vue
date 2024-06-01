@@ -1,11 +1,11 @@
 <template>
     <div class="city-card" @click="handleClick">
-      <h2>{{ city.name }}</h2>
-      <p><strong>Country:</strong> {{ city.country }}</p>
-      <p><strong>Region:</strong> {{ city.region }}</p>
-      <p><strong>Latitude:</strong> {{ city.latitude }}</p>
-      <p><strong>Longitude:</strong> {{ city.longitude }}</p>
-      <p><strong>Population:</strong> {{ city.population }}</p>
+      <h2 class="text-primary">{{ city.name }}</h2>
+      <p class="text-primary"><strong>Country:</strong> {{ city.country }}</p>
+      <p class="text-primary"><strong>Region:</strong> {{ city.region }}</p>
+      <p class="text-primary"><strong>Latitude:</strong> {{ city.latitude }}</p>
+      <p class="text-primary"><strong>Longitude:</strong> {{ city.longitude }}</p>
+      <p class="text-primary"><strong>Population:</strong> {{ city.population }}</p>
     </div>
   </template>
   
@@ -29,19 +29,23 @@
   </script>
   
   <style>
+  @import 'tailwindcss/tailwind.css';
   .city-card {
     border: 1px solid #ccc;
     padding: 16px;
-    margin: 8px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #f9f9f9;
     transition: transform 0.3s;
-    display: flex; /* Use flexbox for vertical layout */
-    flex-direction: column; /* Layout children in a column */
-    height: 200px; /* Set the height */
-    width: 250px; /* Set the width */
+    display: flex;
+    flex-direction: column; 
+    width: 275px; 
   }
+  @media (max-width: 750px) {
+  .city-card {
+    width: calc(50% - 1rem);
+  }
+}
   
   .city-card:hover {
     transform: translateY(-5px);

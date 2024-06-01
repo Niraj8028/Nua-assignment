@@ -1,7 +1,8 @@
 
 <template>
-  <div>
-    <div class="toggle-buttons">
+  <div class="p-2">
+    <h2 class="text-xl text-center font-bold flex-grow">All Cities</h2>
+    <div class="toggle-buttons mt-3">
       <button @click="toggleView('cards')" :class="{ active: viewMode === 'cards' }">City Cards</button>
       <button @click="toggleView('records')" :class="{ active: viewMode === 'records' }">City Records</button>
     </div>
@@ -35,13 +36,10 @@
         </tbody>
       </table>
     </div>
-    <!-- <div v-else>
-      <p>Loading...</p>
-    </div> -->
-    <div v-if="viewMode == 'cards'" class="pagination">
+    <div class="pagination">
       <button
         @click="prevPage()"
-        :disabled="currentPage === 0"
+        :disabled="currentPage === 1"
         class="pagination-button"
       >
         Previous
@@ -49,28 +47,6 @@
       <button @click="nextPage()" class="pagination-button">
         Next
       </button>
-    </div>
-    <div v-if="selectedCity" class="modal">
-      <div class="modal-content">
-        <span class="close" @click="selectedCity = null">&times;</span>
-        <!-- <h2>Nearby Cities for {{ selectedCity.name }}</h2> -->
-        <table>
-          <thead>
-            <tr>
-              <th>City</th>
-              <th>Distance</th>
-              <th>Region</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="nearbyCity in getNearbyCities()" :key="nearbyCity.city.id">
-              <td>{{ nearbyCity.city.name }}</td>
-              <td>{{ nearbyCity.distance.toFixed(2) }} km</td>
-              <td>{{ nearbyCity.city.region }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
     <CityModal
       :cities="nearbyCities"
@@ -84,7 +60,7 @@
 <script>
 import CityItem from './CityItem.vue'
 import CityModal from './CityModal.vue'
-import { getAllCities, getNearbyCities, searchCity } from '@/api/countries.api';
+import { getAllCities, getNearbyCities } from '@/api/countries.api';
 
 export default {
   name: 'CityGrid',
@@ -127,17 +103,6 @@ export default {
         this.isLoading = false;
       }
     },
-    async handleSearch() {
-      this.isLoading = true; // Start loading
-      try {
-        const response = await searchCity(this.cityName);
-        this.citiesData = response.data; // Adjust this based on the actual response structure
-      } catch (error) {
-        console.error('Error searching cities:', error);
-      } finally {
-        this.isLoading = false; // End loading
-      }
-    },
     nextPage() {
       this.currentPage++;
       this.offset+=10;
@@ -168,26 +133,6 @@ export default {
 <style>
 .heading {
   text-align: center;
-}
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
 }
 .toggle-buttons {
   text-align: center;
@@ -228,7 +173,8 @@ export default {
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
 
 .pagination-button {

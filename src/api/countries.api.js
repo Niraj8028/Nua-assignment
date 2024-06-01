@@ -10,7 +10,7 @@ export const getAllCities = async (limit = 10, offset) => {
                 offset: offset
             }
         });
-        return response.data; // assuming you want to return the data part of the response
+        return response.data; 
     } catch (error) {
         console.error('Error fetching countries:', error);
         throw error;
@@ -27,7 +27,7 @@ export const getNearbyCities = async ( cityId ) => {
                 'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
             }
         });
-        return response.data; // Assuming you want to return the data part of the response
+        return response.data; 
     } catch (error) {
         console.error('Error fetching nearby cities:', error);
         throw error;
@@ -60,7 +60,8 @@ export const citiesInRegion = async (Country) => {
     try {
         const response = await axiosInstance.get(`/v1/geo/countries/${Country}/places`, {
             params: {
-                minPopulation: '1000000'
+                minPopulation: '1000000',
+                limit: 10
             },
             headers: {
                 'content-type': 'application/json',
