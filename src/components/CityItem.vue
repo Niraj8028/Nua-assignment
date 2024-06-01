@@ -1,5 +1,5 @@
 <template>
-    <div class="city-card">
+    <div class="city-card" @click="handleClick">
       <h2>{{ city.name }}</h2>
       <p><strong>Country:</strong> {{ city.country }}</p>
       <p><strong>Region:</strong> {{ city.region }}</p>
@@ -15,16 +15,16 @@
     props: {
       city: {
         type: Object,
-        default: () => ({
-          name: 'City Name',
-          country: 'Country Name',
-          region: 'Region Name',
-          latitude: 'Latitude',
-          longitude: 'Longitude',
-          population: 'Population'
-        })
+        
       }
+    },
+    methods: {
+
+    handleClick() {
+      console.log(this.city.id)
+      this.$emit('city-clicked', this.city.id);
     }
+  }
   };
   </script>
   
