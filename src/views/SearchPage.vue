@@ -4,7 +4,7 @@
     <div>
       <p class="text-center text-lg mt-5 font-bold">Showing search results... {{ query }}</p>
       <div class="flex justify-center gap-6 flex-wrap m-4">
-        <div v-for="city in cities" :key="city.id" class="city-card">
+        <div v-for="city in cities" :key="city.id" class="city-card"  @click="fetchNearbyCities(city.id)">
           <p>{{ city.name }}</p>
           <p class="text-primary"><strong>Region:</strong> {{ city.region }}</p>
           <p class="text-primary"><strong>Latitude:</strong> {{ city.latitude }}</p>
@@ -19,31 +19,46 @@
           <button @click="goBack" class="pagination-button">Go Back</button>
         </div>
     </div>
+    <CityModal
+      :cities="nearbyCities"
+      :visible="showCityModal"
+      :isLoading="isLoading"
+      @close="showCityModal = false"
+    />
   </div>
 </template>
 
 <script>
 // import CityItem from '@/components/CityItem.vue';
-import { searchCity, citiesInRegion } from '@/api/countries.api'
+import { searchCity, citiesInRegion, getNearbyCities } from '@/api/countries.api'
 import Navbar from '@/components/Navbar.vue'
+import CityModal from '@/components/CityModal.vue'
+// import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'SearchResults',
   components: {
-    Navbar
+    Navbar,
+    CityModal
   },
   props: ['query', 'countryCode'],
   data() {
     return {
       cities: [],
-      loading: true
+      loading: true,
+      showCityModal: false,
+      nearbyCities: [],
     }
   },
   watch: {
     countryCode: 'fetchCities',
     query: 'fetchCities'
   },
+  computed: {
+    // ...mapGetters(['getSearchedCities'])
+  },
   methods: {
+    // ...mapActions(['fetchCities']),
     async fetchCities() {
       try {
         this.loading = true;
@@ -56,6 +71,18 @@ export default {
         }
       } catch (error) {
         console.error('Error fetching search results:', error)
+      } finally {
+        this.loading = false;
+      }
+    },
+    async fetchNearbyCities(cityId) {
+      this.loading = true;
+      this.showCityModal = true;
+      try {
+        const response = await getNearbyCities(cityId);
+        this.nearbyCities = response.data;
+      } catch (error) {
+        console.error('Error fetching nearby cities:', error);
       } finally {
         this.loading = false;
       }
